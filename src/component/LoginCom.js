@@ -1,13 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Logo from "../png/screenshot1.png";
 import Logo1 from "../png/screenshot2.png";
 import Logo2 from "../png/screenshot3.png";
 import Logo3 from "../png/screenshot4.png";
 import { AiFillFacebook } from "react-icons/ai";
 import Input from "ui/Input";
-export default function Login() {
+export default function LoginCom() {
   const inputRef = useRef();
-
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   useEffect(() => {
     const img = inputRef.current.querySelectorAll("img");
     let index = 0;
@@ -51,8 +52,15 @@ export default function Login() {
               <Input
                 type="text"
                 label="Telefon numarası, kullanıcı adı veya e-posta"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
               />
-              <Input type="password" label="Şifre" />
+              <Input
+                type="password"
+                label="Şifre"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
               <button className="w-full mt-2 mb-2 bg-disabled rounded-md text-white font-medium pt-1 pb-1">
                 Giriş yap
               </button>
@@ -63,29 +71,29 @@ export default function Login() {
                 </span>
                 <div className="h-px flex-1 bg-gray-300"></div>
               </div>
-              <div className="flex justify-center items-center gap-x-2">
+              <div className="flex justify-center items-center gap-x-2 cursor-pointer">
                 <AiFillFacebook size={20} className=" text-facebook" />
                 <span className="text-facebook font-medium text-sm">
                   Facebook ile Giriş Yap
                 </span>
               </div>
-              <p className="text-center text-sm text-gray-600 mb-3">
+              <p className="text-center text-sm text-gray-600 mb-3 cursor-pointer">
                 Şifreni mi unuttun?
               </p>
             </form>
           </div>
           <div className=" bg-white pt-[20px] pb-[20px] text-center border border-gray-300 text-sm">
             Hesabın yok mu?{" "}
-            <span className="text-login font-medium">Kaydol</span>
+            <span className="text-login font-medium cursor-pointer">Kaydol</span>
           </div>
-          <p className="text-center text-sm">Uygulamayı indir.</p>
+          <p className="text-center text-sm cursor-pointer">Uygulamayı indir.</p>
           <div className="flex gap-x-3 h-[40px] items-center justify-center ">
             <img
-              className="w-[134px] h-full"
+              className="w-[134px] h-full cursor-pointer"
               src="https://static.cdninstagram.com/rsrc.php/v3/yp/r/XUCupIzGmzB.png"
             ></img>
             <img
-              className="w-[134px] h-full"
+              className="w-[134px] h-full cursor-pointer"
               src="https://static.cdninstagram.com/rsrc.php/v3/yf/r/BFthdeAc5KC.png"
             ></img>
           </div>
