@@ -1,14 +1,20 @@
 import { useEffect, useState, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../png/screenshot1.png";
 import Logo1 from "../png/screenshot2.png";
 import Logo2 from "../png/screenshot3.png";
 import Logo3 from "../png/screenshot4.png";
 import { AiFillFacebook } from "react-icons/ai";
+import loginHandle from "firebase.js";
 import Input from "ui/Input";
+import toast from "react-hot-toast";
 export default function LoginCom() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const inputRef = useRef();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  // Login sayfası için resimlerin geçiş efekti
   useEffect(() => {
     const img = inputRef.current.querySelectorAll("img");
     let index = 0;
@@ -19,6 +25,21 @@ export default function LoginCom() {
     }, 4000);
     return () => clearInterval(interval);
   }, [inputRef]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await loginHandle(userName, password);
+      toast.success("Giriş işlemi başarılı");
+    } catch (err) {
+      setUserName("");
+      setPassword("");
+      toast.error(err.code);
+    }
+    // navigate(location.state?.return_url || "/", {
+    // replace: true,
+    // });
+  };
   return (
     <div className=" h-screen w-full flex flex-col justify-center items-center ">
       <div className=" flex justify-center items-center gap-x-5 flex-grow ">
@@ -48,7 +69,7 @@ export default function LoginCom() {
             <a className=" flex justify-center">
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2880px-Instagram_logo.svg.png" />
             </a>
-            <form className=" flex flex-col gap-y-3">
+            <form onSubmit={handleSubmit} className=" flex flex-col gap-y-3">
               <Input
                 type="text"
                 label="Telefon numarası, kullanıcı adı veya e-posta"
@@ -84,9 +105,13 @@ export default function LoginCom() {
           </div>
           <div className=" bg-white pt-[20px] pb-[20px] text-center border border-gray-300 text-sm">
             Hesabın yok mu?{" "}
-            <span className="text-login font-medium cursor-pointer">Kaydol</span>
+            <span className="text-login font-medium cursor-pointer">
+              Kaydol
+            </span>
           </div>
-          <p className="text-center text-sm cursor-pointer">Uygulamayı indir.</p>
+          <p className="text-center text-sm cursor-pointer">
+            Uygulamayı indir.
+          </p>
           <div className="flex gap-x-3 h-[40px] items-center justify-center ">
             <img
               className="w-[134px] h-full cursor-pointer"
