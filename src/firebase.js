@@ -6,6 +6,8 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import toast from "react-hot-toast";
+
 import { userHandle } from "utils";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -37,14 +39,11 @@ const loginHandle = async (email, password) => {
 
 export default loginHandle;
 
-
-export const logoutHandle = (auth) => {
-  signOut(auth)
-    .then(() => {
-      userHandle(false);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
+export const logoutHandle = async () => {
+  try {
+    await signOut(auth);
+    toast.success("Çıkış işlemi başarılı");
+  } catch (err) {
+    toast.error(err.code);
+  }
+};
