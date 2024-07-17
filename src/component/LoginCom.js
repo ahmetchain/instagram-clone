@@ -36,9 +36,9 @@ export default function LoginCom() {
       setPassword("");
       toast.error(err.code);
     }
-    // navigate(location.state?.return_url || "/", {
-    // replace: true,
-    // });
+    navigate(location.state?.return_url || "/", {
+    replace: true,
+    });
   };
   return (
     <div className=" h-screen w-full flex flex-col justify-center items-center ">
