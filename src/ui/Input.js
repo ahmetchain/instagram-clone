@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-export default function Input({ type, label, ...props }) {
+import { useField } from "formik";
+import classNames from "classnames";
+export default function Input({ type = "text", label, ...props }) {
   const [show, setShow] = useState(false);
   const [inputType, setInputType] = useState(type);
+  const [field, meta, helpers] = useField(props);
 
   useEffect(() => {
     if (show) {
@@ -15,11 +18,16 @@ export default function Input({ type, label, ...props }) {
     <label className="  relative flex border bg-zinc-50 rounded-sm focus-within:border-gray-500 items-center ">
       <input
         type={inputType}
-        required={true}
         className="  pt-3  w-full h-[40px]  outline-none peer text-sm pl-2 "
+        {...field}
         {...props}
       />
-      <small className=" absolute pointer-events-none cursor-text text-[12px] top-1/2 -translate-y-1/2 left-3 text-gray-600 transition-all peer-focus:text-[10px] peer-valid:text-[10px] peer-valid:top-3 peer-focus:top-3">
+      <small
+        className={classNames({
+          " absolute pointer-events-none cursor-text text-[12px] top-1/2 -translate-y-1/2 left-3 text-gray-600 transition-all ": true,
+          "!text-[10px] !top-3": field.value,
+        })}
+      >
         {label}
       </small>
       {type === "password" && props.value && (

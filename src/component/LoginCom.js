@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { LoginScheama } from "validation";
 import Logo from "../png/screenshot1.png";
 import Logo1 from "../png/screenshot2.png";
 import Logo2 from "../png/screenshot3.png";
@@ -8,12 +9,11 @@ import { AiFillFacebook } from "react-icons/ai";
 import loginHandle from "firebase.js";
 import Input from "ui/Input";
 import toast from "react-hot-toast";
+import { Formik, Form } from "formik";
 export default function LoginCom() {
   const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef();
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
   // Login sayfası için resimlerin geçiş efekti
   useEffect(() => {
     const img = inputRef.current.querySelectorAll("img");
@@ -25,21 +25,20 @@ export default function LoginCom() {
     }, 4000);
     return () => clearInterval(interval);
   }, [inputRef]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Login işlemi
+  const handleSubmit = async (values) => {
     try {
-      await loginHandle(userName, password);
+      await loginHandle(values.username, values.password);
       toast.success("Giriş işlemi başarılı");
     } catch (err) {
-      setUserName("");
-      setPassword("");
       toast.error(err.code);
     }
     navigate(location.state?.return_url || "/", {
-    replace: true,
+      replace: true,
     });
   };
+
+  const image = [Logo, Logo1, Logo2, Logo3];
   return (
     <div className=" h-screen w-full flex flex-col justify-center items-center ">
       <div className=" flex justify-center items-center gap-x-5 flex-grow ">
@@ -47,61 +46,56 @@ export default function LoginCom() {
           ref={inputRef}
           className="transition-all relative w-[380px] h-[580px] bg-mobile-login bg-[top_left_-46px] bg-[length:468.32px_634.15px]"
         >
-          <img
-            className="w-[250px] absolute top-6 right-[18px] duration-[2s]"
-            src={Logo}
-          />
-          <img
-            className="w-[250px] absolute top-6 right-[18px] duration-[2s]  opacity-0"
-            src={Logo1}
-          />
-          <img
-            className="w-[250px] absolute top-6 right-[18px] duration-[2s]  opacity-0"
-            src={Logo2}
-          />
-          <img
-            className="w-[250px] absolute top-6 right-[18px] duration-[2s]  opacity-0"
-            src={Logo3}
-          />
+          {image.map((img, key) => (
+            <img
+              key={key}
+              className="w-[250px] absolute top-6 right-[18px] duration-[2s]"
+              src={img}
+            />
+          ))}
         </div>
         <div className="w-[350px] grid gap-y-3">
           <div className=" p-[40px] bg-white border border-gray-300 pt-8 pb-2">
             <a className=" flex justify-center">
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2880px-Instagram_logo.svg.png" />
             </a>
-            <form onSubmit={handleSubmit} className=" flex flex-col gap-y-3">
-              <Input
-                type="text"
-                label="Telefon numarası, kullanıcı adı veya e-posta"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-              />
-              <Input
-                type="password"
-                label="Şifre"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button className="w-full mt-2 mb-2 bg-disabled rounded-md text-white font-medium pt-1 pb-1">
-                Giriş yap
-              </button>
-              <div className="flex justify-center items-center mb-5">
-                <div className="h-px flex-1 bg-gray-300"></div>
-                <span className="px-4 font-medium text-gray-500 text-sm">
-                  YA DA
-                </span>
-                <div className="h-px flex-1 bg-gray-300"></div>
-              </div>
-              <div className="flex justify-center items-center gap-x-2 cursor-pointer">
-                <AiFillFacebook size={20} className=" text-facebook" />
-                <span className="text-facebook font-medium text-sm">
-                  Facebook ile Giriş Yap
-                </span>
-              </div>
-              <p className="text-center text-sm text-gray-600 mb-3 cursor-pointer">
-                Şifreni mi unuttun?
-              </p>
-            </form>
+            <Formik
+              validationSchema={LoginScheama}
+              initialValues={{ username: "", password: "" }}
+              onSubmit={handleSubmit}
+            >
+              {({ isSubmitting, isValid, dirty }) => (
+                <Form className=" flex flex-col gap-y-3">
+                  <Input
+                    name="username"
+                    label="Telefon numarası, kullanıcı adı veya e-posta"
+                  />
+                  <Input name="password" type="password" label="Şifre" />
+                  <button
+                    disabled={!isValid || !dirty || isSubmitting}
+                    className="w-full mt-2 mb-2 disabled:bg-disabled bg-[#0095f6] rounded-md text-white font-medium pt-1 pb-1"
+                  >
+                    Giriş yap
+                  </button>
+                  <div className="flex justify-center items-center mb-5">
+                    <div className="h-px flex-1 bg-gray-300"></div>
+                    <span className="px-4 font-medium text-gray-500 text-sm">
+                      YA DA
+                    </span>
+                    <div className="h-px flex-1 bg-gray-300"></div>
+                  </div>
+                  <div className="flex justify-center items-center gap-x-2 cursor-pointer">
+                    <AiFillFacebook size={20} className=" text-facebook" />
+                    <span className="text-facebook font-medium text-sm">
+                      Facebook ile Giriş Yap
+                    </span>
+                  </div>
+                  <p className="text-center text-sm text-gray-600 mb-3 cursor-pointer">
+                    Şifreni mi unuttun?
+                  </p>
+                </Form>
+              )}
+            </Formik>
           </div>
           <div className=" bg-white pt-[20px] pb-[20px] text-center border border-gray-300 text-sm">
             Hesabın yok mu?{" "}
