@@ -5,7 +5,10 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { getFirestore, addDoc, collection } from "firebase/firestore";
+
 import toast from "react-hot-toast";
 
 import { userHandle } from "utils";
@@ -25,6 +28,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const auth = getAuth();
 
@@ -36,8 +40,17 @@ const loginHandle = async (email, password) => {
   const response = await signInWithEmailAndPassword(auth, email, password);
   console.log(response.user);
 };
-
 export default loginHandle;
+
+export const registerHandle = async ({
+  email,
+  password,
+  full_name,
+  username,
+}) => {
+  const response = await createUserWithEmailAndPassword(auth, email, password);
+};
+
 
 export const logoutHandle = async () => {
   try {

@@ -1,6 +1,7 @@
 import Home from "pages/Home";
-import Login from "pages/Login";
+import Login from "pages/auth/Login";
 import AuthLayout from "pages/auth";
+import Register from "pages/auth/Register";
 import PrivateRoutes from "ui/PrivateRoutes";
 const routes = [
   {
@@ -15,6 +16,10 @@ const routes = [
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
       },
     ],
   },

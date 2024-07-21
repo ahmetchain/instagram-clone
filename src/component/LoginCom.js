@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { LoginScheama } from "validation";
 import Logo from "../png/screenshot1.png";
 import Logo1 from "../png/screenshot2.png";
@@ -10,6 +10,8 @@ import loginHandle from "firebase.js";
 import Input from "ui/Input";
 import toast from "react-hot-toast";
 import { Formik, Form } from "formik";
+import Button from "./Button";
+import Separator from "./Separator";
 export default function LoginCom() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,12 +32,12 @@ export default function LoginCom() {
     try {
       await loginHandle(values.username, values.password);
       toast.success("Giriş işlemi başarılı");
+      navigate(location.state?.return_url || "/", {
+        replace: true,
+      });
     } catch (err) {
       toast.error(err.code);
     }
-    navigate(location.state?.return_url || "/", {
-      replace: true,
-    });
   };
 
   const image = [Logo, Logo1, Logo2, Logo3];
@@ -71,19 +73,13 @@ export default function LoginCom() {
                     label="Telefon numarası, kullanıcı adı veya e-posta"
                   />
                   <Input name="password" type="password" label="Şifre" />
-                  <button
+                  <Button
+                    type="submit"
                     disabled={!isValid || !dirty || isSubmitting}
-                    className="w-full mt-2 mb-2 disabled:bg-disabled bg-[#0095f6] rounded-md text-white font-medium pt-1 pb-1"
                   >
                     Giriş yap
-                  </button>
-                  <div className="flex justify-center items-center mb-5">
-                    <div className="h-px flex-1 bg-gray-300"></div>
-                    <span className="px-4 font-medium text-gray-500 text-sm">
-                      YA DA
-                    </span>
-                    <div className="h-px flex-1 bg-gray-300"></div>
-                  </div>
+                  </Button>
+                  <Separator />
                   <div className="flex justify-center items-center gap-x-2 cursor-pointer">
                     <AiFillFacebook size={20} className=" text-facebook" />
                     <span className="text-facebook font-medium text-sm">
@@ -99,9 +95,12 @@ export default function LoginCom() {
           </div>
           <div className=" bg-white pt-[20px] pb-[20px] text-center border border-gray-300 text-sm">
             Hesabın yok mu?{" "}
-            <span className="text-login font-medium cursor-pointer">
+            <Link
+              to={"/auth/register"}
+              className="text-login font-medium cursor-pointer"
+            >
               Kaydol
-            </span>
+            </Link>
           </div>
           <p className="text-center text-sm cursor-pointer">
             Uygulamayı indir.

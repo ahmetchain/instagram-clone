@@ -18,7 +18,7 @@ export default function Input({ type = "text", label, ...props }) {
     <label className="  relative flex border bg-zinc-50 rounded-sm focus-within:border-gray-500 items-center ">
       <input
         type={inputType}
-        className="  pt-3  w-full h-[40px]  outline-none peer text-sm pl-2 "
+        className="  pt-3  w-full h-[40px] bg-transparent  outline-none peer text-sm pl-2 "
         {...field}
         {...props}
       />
@@ -30,11 +30,11 @@ export default function Input({ type = "text", label, ...props }) {
       >
         {label}
       </small>
-      {type === "password" && props.value && (
+      {type === "password" && field.value && (
         <div
           type="button"
           onClick={() => setShow(!show)}
-          className="h-full flex pr-2 cursor-pointer pl-3 text-gray-500 hover:text-gray-700 transition-all select-none  "
+          className="h-full flex pr-2 cursor-pointer pl-3 text-[#262626] hover:text-opacity-70 transition-all select-none  "
         >
           {show ? "Hide" : "Show"}
         </div>
