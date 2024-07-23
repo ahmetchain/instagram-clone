@@ -7,7 +7,7 @@ import {
   signOut,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { getFirestore, addDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 import toast from "react-hot-toast";
 
@@ -32,13 +32,24 @@ const db = getFirestore(app);
 
 const auth = getAuth();
 
-onAuthStateChanged(auth, (user) => {
-  userHandle(user || false);
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    let dbUser = await getDoc(doc(db, "users", user.uid));
+    let data = {
+      email: user.email,
+      uid: user.uid,
+      emailVerified: user.emailVerified,
+      ...dbUser.data(),
+    };
+    userHandle(data);
+  } else {
+    userHandle(false);
+  }
 });
 
 const loginHandle = async (email, password) => {
   const response = await signInWithEmailAndPassword(auth, email, password);
-  console.log(response.user);
+  return response;
 };
 export default loginHandle;
 
@@ -49,8 +60,17 @@ export const registerHandle = async ({
   username,
 }) => {
   const response = await createUserWithEmailAndPassword(auth, email, password);
+  await setDoc(doc(db, "users", response.user.uid), {
+    email,
+    full_name,
+    username,
+    notification: [],
+    followers: [],
+    following: [],
+    posts: [],
+  });
+  return response;
 };
-
 
 export const logoutHandle = async () => {
   try {

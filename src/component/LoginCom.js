@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, Navigate } from "react-router-dom";
 import { LoginScheama } from "validation";
 import Logo from "../png/screenshot1.png";
 import Logo1 from "../png/screenshot2.png";
@@ -12,7 +12,9 @@ import toast from "react-hot-toast";
 import { Formik, Form } from "formik";
 import Button from "./Button";
 import Separator from "./Separator";
+import { useSelector } from "react-redux";
 export default function LoginCom() {
+  const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef();
@@ -28,13 +30,14 @@ export default function LoginCom() {
     return () => clearInterval(interval);
   }, [inputRef]);
   // Login işlemi
+
+  if (user) {
+    return <Navigate to={location.state?.return_url || "/"} replace={true} />;
+  }
   const handleSubmit = async (values) => {
     try {
       await loginHandle(values.username, values.password);
       toast.success("Giriş işlemi başarılı");
-      navigate(location.state?.return_url || "/", {
-        replace: true,
-      });
     } catch (err) {
       toast.error(err.code);
     }

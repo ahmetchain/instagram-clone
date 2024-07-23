@@ -12,11 +12,13 @@ export default function LoginCom() {
   const location = useLocation();
   const handleSubmit = async (values) => {
     try {
-      await registerHandle(values);
-      toast.success("Giriş işlemi başarılı");
-      navigate(location.state?.return_url || "/", {
-        replace: true,
-      });
+      const response = await registerHandle(values);
+      if (response) {
+        toast.success("Giriş işlemi başarılı");
+        navigate(location.state?.return_url || "/", {
+          replace: true,
+        });
+      }
     } catch (err) {
       toast.error(err.code);
     }
@@ -72,7 +74,10 @@ export default function LoginCom() {
                     İlkemizi kabul etmiş olursun.
                   </p>
                 </div>
-                <Button disabled={!isValid || !dirty || isSubmitting}>
+                <Button
+                  type="submit"
+                  disabled={!isValid || !dirty || isSubmitting}
+                >
                   Kaydol
                 </Button>
               </Form>

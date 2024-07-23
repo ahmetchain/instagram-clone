@@ -11,6 +11,7 @@ function App() {
   }
   return (
     <>
+      <pre>{JSON.stringify(user)}</pre>
       <Toaster position="top-right" />
       {handleRoutes}
     </>
