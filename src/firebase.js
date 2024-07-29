@@ -59,17 +59,40 @@ export const registerHandle = async ({
   full_name,
   username,
 }) => {
-  const response = await createUserWithEmailAndPassword(auth, email, password);
-  await setDoc(doc(db, "users", response.user.uid), {
-    email,
-    full_name,
-    username,
-    notification: [],
-    followers: [],
-    following: [],
-    posts: [],
-  });
-  return response;
+  try {
+    const user = await getDoc(doc(db, "user", username));
+    if (user.exists()) {
+      toast.error(`${username} kullanıcı adı zaten alınmış`);
+    } else {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (response.user) {
+        await setDoc(doc(db, "user", username), {
+          user_uid: response.user.uid,
+        });
+        await setDoc(doc(db, "users", response.user.uid), {
+          email,
+          full_name,
+          username,
+          notification: [],
+          followers: [],
+          following: [],
+          posts: 0,
+          website: "",
+          bio: "",
+          gender: "",
+          phoneNumber: "",
+        });
+
+        return response.user;
+      }
+    }
+  } catch (err) {
+    toast.error(err.code);
+  }
 };
 
 export const logoutHandle = async () => {

@@ -2,7 +2,13 @@ import React from "react";
 import { logoutHandle } from "firebase.js";
 import { Link } from "react-router-dom";
 import Search from "./Search";
-
+import Homesvg from "Icon/Home.svg";
+import Discoversvg from "Icon/Discover.svg";
+import Notification from "Icon/Notifications.svg";
+import Message from "Icon/Message.svg";
+import Compose from "Icon/Compose.svg";
+import Icon from "./Icon";
+import ProfilePicture from "Icon/pp.jpg";
 export default function Header() {
   return (
     <header className="  border-b ">
@@ -15,9 +21,19 @@ export default function Header() {
           />
         </Link>
         <Search />
-        <button onClick={logoutHandle} className="w-20 h-10 border-2 m-3">
-          Logout
-        </button>
+        <div className="flex gap-x-6 items-center">
+          <Icon className="cursor-pointer" name={Homesvg} size={24} />
+          <Icon className="cursor-pointer" name={Message} size={24} />
+          <Icon className="cursor-pointer" name={Compose} size={24} />
+          <Icon className="cursor-pointer" name={Discoversvg} size={24} />
+          <Icon className="cursor-pointer" name={Notification} size={24} />
+          <div className="w-6 h-6  cursor-pointer">
+            <img className="w-full h-full rounded-full" src={ProfilePicture}></img>
+          </div>
+          <button onClick={logoutHandle} className="w-20 h-10 border-2 m-3">
+            Logout
+          </button>
+        </div>
       </div>
     </header>
   );
