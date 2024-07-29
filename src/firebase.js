@@ -52,7 +52,15 @@ const loginHandle = async (email, password) => {
   return response;
 };
 export default loginHandle;
-
+export const getUserInfo = async (uname) => {
+  const username = await getDoc(doc(db, "user", uname));
+  if (username.exists()) {
+    return (await getDoc(doc(db, "users", username.data().user_uid))).data();
+  } else {
+    toast.error("Kullanıcı bulunamadı");
+    throw new Error("Kullanıcı bulunamadı");
+  }
+};
 export const registerHandle = async ({
   email,
   password,
