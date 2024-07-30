@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUserInfo } from "firebase.js"; // import the getUserInfo function from firebase.js
+import Header from "./components/header";
 export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
@@ -16,9 +17,11 @@ export default function Profile() {
       });
   }, []);
   return (
-    <div>
-      {user && "EVET VAR"}
-      Profile page = {username}
-    </div>
+    user && (
+      <div>
+        <Header user={user} />
+        <nav className=" border-t"></nav>
+      </div>
+    )
   );
 }

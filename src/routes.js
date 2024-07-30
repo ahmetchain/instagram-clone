@@ -2,7 +2,7 @@ import Home from "pages/Home";
 import Login from "pages/auth/Login";
 import AuthLayout from "pages/auth";
 import MainLayout from "pages/layout";
-import Profile from "pages/Profile";
+import Profile from "pages/profile";
 import Register from "pages/auth/Register";
 import PrivateRoutes from "ui/PrivateRoutes";
 const routes = [
