@@ -7,6 +7,8 @@ import Register from "pages/auth/Register";
 import PrivateRoutes from "ui/PrivateRoutes";
 import ProfilePosts from "pages/profile/posts";
 import ProfileSaves from "pages/profile/saves";
+import InboxLayout from "pages/inbox";
+import Inbox from "pages/inbox/inbox";
 const routes = [
   {
     path: "/",
@@ -23,14 +25,23 @@ const routes = [
         children: [
           {
             index: true,
-            element: <ProfilePosts/>
+            element: <ProfilePosts />,
           },
           {
             path: "saved",
             element: <ProfileSaves />,
-          }
-        ]
-        
+          },
+        ],
+      },
+      {
+        path: "inbox",
+        element: <InboxLayout />,
+        children: [
+          {
+            index: true,
+            element: <Inbox />,
+          },
+        ],
       },
     ],
   },
