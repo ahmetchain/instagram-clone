@@ -1,11 +1,9 @@
 import Icon from "component/Icon";
 import React from "react";
 import InboxMessage from "Icon/inbox.svg";
-import Sidebar from "./sidebar";
 export default function Inbox() {
   return (
-    <div className="flex-1 flex ">
-      <Sidebar />
+    <div className="flex-1">
       <div className=" h-full flex-1">
         <div className="flex flex-col items-center justify-center h-full">
           <div>

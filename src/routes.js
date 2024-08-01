@@ -9,6 +9,7 @@ import ProfilePosts from "pages/profile/posts";
 import ProfileSaves from "pages/profile/saves";
 import InboxLayout from "pages/inbox";
 import Inbox from "pages/inbox/inbox";
+import Chat from "pages/inbox/chat";
 const routes = [
   {
     path: "/",
@@ -40,6 +41,10 @@ const routes = [
           {
             index: true,
             element: <Inbox />,
+          },
+          {
+            path: ":conversationId",
+            element: <Chat />,
           },
         ],
       },
