@@ -49,7 +49,7 @@ export default function LoginCom() {
       <div className=" flex justify-center items-center gap-x-5 flex-grow ">
         <div
           ref={inputRef}
-          className="transition-all relative w-[380px] h-[580px] bg-mobile-login bg-[top_left_-46px] bg-[length:468.32px_634.15px]"
+          className="transition-all hidden md:block  relative w-[380px] h-[580px] bg-mobile-login bg-[top_left_-46px] bg-[length:468.32px_634.15px]"
         >
           {image.map((img, key) => (
             <img
@@ -120,7 +120,7 @@ export default function LoginCom() {
           </div>
         </div>
       </div>
-      <footer className=" h-1/6 flex justify-center items-center">
+      <footer className=" h-1/6 md:flex justify-center items-center hidden">
         <nav className="flex flex-col gap-y-5 text-xs text-gray-500 ">
           <ul className="flex gap-x-5 ">
             <li>
